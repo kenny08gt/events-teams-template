@@ -19,8 +19,13 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $events = \App\Models\Event::all();
+    return view('dashboard')->with('events', $events);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::prefix("event")->group(function() {
+   Route::get("{event:slug}", [\App\Http\Controllers\EventController::class, "view"])->name("event.view");
+})->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

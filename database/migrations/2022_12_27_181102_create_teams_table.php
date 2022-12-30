@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("slug");
-            $table->string("domain");
-            $table->boolean('active')->default(false);
-//            $table->unique(["domain", "active"]);
+            $table->unsignedBigInteger('event_id');
             $table->timestamps();
+
+            $table->foreign('event_id')->references('id')->on('events');
         });
     }
 
@@ -31,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('events');
-        Schema::enableForeignKeyConstraints();
+        Schema::dropIfExists('teams');
     }
 };
