@@ -23,9 +23,16 @@ Route::get('/dashboard', function () {
     return view('dashboard')->with('events', $events);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::prefix("event")->group(function() {
-   Route::get("{event:slug}", [\App\Http\Controllers\EventController::class, "view"])->name("event.view");
+Route::prefix("event")->group(function () {
+    Route::get("{event:slug}", [\App\Http\Controllers\EventController::class, "view"])->name("event.view");
+    Route::prefix("teams")->group(function () {
+        Route::get("{team:slug}", [\App\Http\Controllers\TeamsController::class, "view"])->name("team.view");
+    });
 })->middleware(['auth', 'verified']);
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get("{user_public_data:slug}", [\App\Http\Controllers\UserPublicDataController::class, "view"])->name("user.public.view");
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,4 +40,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

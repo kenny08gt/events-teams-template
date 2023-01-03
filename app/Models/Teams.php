@@ -29,4 +29,12 @@ class Teams extends Model
         return $this->members()->join('donations', 'donations.user_id', '=', 'user_public_data.user_id')
             ->sum('donations.amount');
     }
+
+    public function membersByDonations()
+    {
+        return $this->members()->selectRaw("user_public_data.*, sum(donations.amount) as 'amount'")
+            ->join("donations", "donations.user_id", "=", "user_public_data.user_id")
+            ->groupBy("user_public_data.slug")
+            ->orderByDesc('amount');
+    }
 }

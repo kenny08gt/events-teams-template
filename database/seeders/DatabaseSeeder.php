@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::create([
+            'name' => 'test',
+            'email' => 'test@email.com',
+            'password' => bcrypt('12345678')
+        ]);
         $events = Event::factory(5)->create();
 
         foreach ($events as $event) {

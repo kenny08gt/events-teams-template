@@ -27,7 +27,9 @@
                         @foreach($event->teamsByDonation()->get() as $team)
                             <tr  class="p-2 rounded-lg relative  max-w-full my-2 text-ellipsis overflow-hidden text-break whitespace-nowrap bg-gray-100">
                                 <td  class="px-4 py-2">
+                                    <a href="{{ route('team.view', $team->slug) }}">
                                     {{$team->name}}
+                                    </a>
                                 </td>
                                 <td  class="px-4 py-2">{{$team->members()->count()}} - {{$team->event_id}}</td>
                                 <td  class="px-4 py-2">$ {{ number_format($team->amount, 2)}}</td>
